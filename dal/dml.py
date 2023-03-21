@@ -1,8 +1,10 @@
 """
 DML stands for Data Manipulation Language
+
 This module contains generic functions to insert data into sql tables
 """
 import pymysql
+import logging
 import requests
 from dal.db_conn_helper import get_db_conn
 from typing import List, Union, Dict, Optional
@@ -10,17 +12,27 @@ from pymysql.err import IntegrityError
 from collections import OrderedDict
 
 
+# logging configuration
+logging.basicConfig(
+    encoding="utf-8",
+    level=logging.INFO
+)
+
+
+
 def insert_resource(
     table_name: str, primary_key_: str, primary_value: int, columns_: List, values: List
 ):
     """
     Inserts a record in the database using primary key
+
     Args:
         table_name (str):
         primary_key_ (str):
         primary_value (int):
         columns_ (list):
         values (list):
+
     Returns:
         number of records inserted in DB table
     """
@@ -69,11 +81,14 @@ def __delete_resource(
         primary_val: Union[str, int]):
     """
     function deletes records based on primary key
+
     Args:
         table_name:
         primary_key:
         primary_val:
+
     Returns:
+
     """
 
     try:
@@ -166,8 +181,12 @@ def get_url_ids(urls) -> str:
 def upsert_films(film: Dict, endpoint: str) -> Optional[int]:
     """
     Notes
+
     upsert = update + insert
+
     "swapi.dev/api/films/1
+
+
     Inserts values into `films` table, updates on duplicate key.
     Args:
         film (dict):
@@ -223,6 +242,7 @@ def upsert_films(film: Dict, endpoint: str) -> Optional[int]:
             )
 
             print(f"\n see here the SQL query :: \n\n{sql}")
+            logging.info('random statement')
 
             result = cursor.execute(sql)
             connection.commit()
